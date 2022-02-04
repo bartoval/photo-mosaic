@@ -13,6 +13,7 @@
         "build": "webpack --config webpack.config.js",
         "check:src": "yarn lint && yarn prettier",
         "start": "yarn build && yarn server",
+        "serve": "serve build",
         "start:watch": "concurrently \"yarn server\" \"yarn build --watch\""
     },
     "husky": {
@@ -62,6 +63,7 @@
         "husky": "^4.2.5",
         "prettier": "2.2.1",
         "pretty-quick": "^3.1.0",
+        "serve": "^11.3.2",
         "style-loader": "^2.0.0",
         "uglifyjs-webpack-plugin": "^2.2.0",
         "webpack": "^4.43.0",
