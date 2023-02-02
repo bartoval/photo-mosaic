@@ -2,8 +2,7 @@
 const path = require("path");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
-const ROOT = process.cwd();
+const webpack = require("webpack");
 
 module.exports = {
   mode: "production",
@@ -29,6 +28,12 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.IMAGE_PATH": JSON.stringify(
+        process.env.IMAGE_PATH || "http://localhost:3000"
+      ),
+      "process.env.TILE_SIZE": JSON.stringify(process.env.TILE_SIZE || "10"),
+    }),
     new ESLintPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
@@ -36,3 +41,5 @@ module.exports = {
     }),
   ],
 };
+
+//process.env.IMAGE_PATH ||

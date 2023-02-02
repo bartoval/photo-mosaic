@@ -1,13 +1,13 @@
-FROM node:13
+FROM node:16
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN yarn install
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 # start app
 CMD ["npm", "run", "start"]

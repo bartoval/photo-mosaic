@@ -16,8 +16,6 @@
 
 <hr />
 
-[**Here a demo of photomosaic**](https://photomosaicool.herokuapp.com/)
-
 ## How it works
 
 ---
@@ -32,8 +30,12 @@ The default size is 10x10.
 
 - npm install
 
-## launch
+## dev launch
 
 - npm run start
 
 check the app on <http://localhost:3000>
+
+## env variables
+IMAGE_PATH=< your server address > // the client uses an other server to get the tiles
+

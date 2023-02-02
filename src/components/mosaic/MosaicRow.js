@@ -16,10 +16,10 @@ export default class MosaicRow {
     this.context = this.canvas.getContext('2d');
     this.canvas.width = width;
     this.canvas.height = config.TILE_HEIGHT;
-    this.url = config.IMAGE_PATH;
+    this.url = process.env.IMAGE_PATH;
   }
 
-  fetch(tiles: Array<{color: string}>) {
+  fetch(tiles: Array<{ color: string }>) {
     for (let i = 0; i < tiles.length; i += 1) {
       this.row[i] = new Promise((resolve: (EventTarget) => void) => {
         const img = new Image();
