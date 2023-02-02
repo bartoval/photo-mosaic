@@ -1,53 +1,38 @@
 // eslint-disable-next-line flowtype/require-valid-file-annotation
-const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const webpackMerge = require('webpack-merge');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require("path");
+const ESLintPlugin = require("eslint-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const baseDevConfig = {
-    mode: 'development',
-    devtool: 'source-map',
-    entry: {
-        App: path.resolve(__dirname, 'src/index.js'),
-    },
-    externals: [],
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'PhotoMosaic.min.js',
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(js)$/,
-                exclude: /node_modules/,
-                loader: ['babel-loader', 'eslint-loader'],
-            },
-            {
-                test: /\.css$/,
-                use: [{loader: 'style-loader'}, {loader: 'css-loader'}],
-            },
-        ],
-    },
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: true,
-            }),
-        ],
-    },
-    plugins: [
-        new CopyWebpackPlugin({patterns: [{from: 'index.html', to: './'}]}),
+const ROOT = process.cwd();
+
+module.exports = {
+  mode: "production",
+  entry: {
+    app: path.join(__dirname, "src/index.js"),
+    worker: path.join(__dirname, "src/worker.js"),
+  },
+  output: {
+    path: path.join(__dirname, "build"),
+    filename: "[name].min.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js)$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"],
+      },
+      {
+        test: /\.s?css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ],
-    watch: false,
+  },
+  plugins: [
+    new ESLintPlugin(),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: path.join(ROOT, "/public/index.html"),
+    }),
+  ],
 };
-const serviceWorkerConfig = webpackMerge.smart(baseDevConfig, {
-    entry: './src/worker.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'worker.js',
-    },
-});
-
-module.exports = [serviceWorkerConfig, baseDevConfig];
