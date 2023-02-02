@@ -32,7 +32,7 @@ module.exports = {
     new ESLintPlugin(),
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: path.join(ROOT, "/public/index.html"),
+      template: "./src/index.html",
     }),
   ],
 };

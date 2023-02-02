@@ -30,10 +30,10 @@ The default size is 10x10.
 
 ## Installation
 
--   npm install
+- npm install
 
 ## launch
 
--   npm run start
+- npm run start
 
 check the app on <http://localhost:3000>
