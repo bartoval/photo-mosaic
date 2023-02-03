@@ -1,13 +1,8 @@
 // @flow
-import * as config from '../../config.json';
-
 export default class MosaicRow {
   row: Array<Promise<*>>;
-
   canvas: HTMLCanvasElement;
-
   context: CanvasRenderingContext2D;
-
   url: string;
 
   constructor(width: number) {
@@ -15,8 +10,8 @@ export default class MosaicRow {
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
     this.canvas.width = width;
-    this.canvas.height = config.TILE_HEIGHT;
-    this.url = process.env.IMAGE_PATH;
+    this.canvas.height = process.env.TILE_SIZE;
+    this.url = `${process.env.IMAGE_PATH}/color/`;
   }
 
   fetch(tiles: Array<{ color: string }>) {
@@ -33,9 +28,8 @@ export default class MosaicRow {
 
   draw(tiles: Array<HTMLImageElement>) {
     for (let i = 0; i < tiles.length; i += 1) {
-      const dx = i * config.TILE_WIDTH;
+      const dx = i * process.env.TILE_SIZE;
       this.context.drawImage(tiles[i], dx, 0);
-      // eslint-disable-next-line no-param-reassign
       tiles[i].src = '';
     }
   }

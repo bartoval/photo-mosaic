@@ -2,5 +2,5 @@
 .vscode
 .eslintcache
 *.log
-build/*
-node_modules/
+build
+node_modules

@@ -1,14 +1,12 @@
 // @flow
 import MosaicRow from './MosaicRow';
-import * as config from '../../config.json';
 
 type PostMessageDataType = {
   colNum: number,
   rowNum: number,
   pixelNum: number,
   dataCtx: ?Uint8ClampedArray,
-  TILE_WIDTH: number,
-  TILE_HEIGHT: number,
+  TILE_SIZE: number,
 };
 
 export default class Mosaic {
@@ -29,7 +27,7 @@ export default class Mosaic {
   dataCtx: ?Uint8ClampedArray;
 
   postMessage: (message: {
-    data: PostMessageDataType | "",
+    data: PostMessageDataType | '',
     type: string,
   }) => void;
 
@@ -47,7 +45,7 @@ export default class Mosaic {
   create(img: HTMLImageElement) {
     const w = new Worker('worker.min.js');
     // set dimension
-    this.numRow = img.height / config.TILE_HEIGHT;
+    this.numRow = img.height / process.env.TILE_SIZE;
     this.canvas.width = img.width;
     this.canvas.height = img.height;
 
@@ -63,12 +61,12 @@ export default class Mosaic {
 
     w.postMessage({
       data: {
-        colNum: Math.floor(img.width / config.TILE_WIDTH),
-        rowNum: Math.floor(img.height / config.TILE_HEIGHT),
-        pixelNum: config.TILE_HEIGHT * img.width * 4,
+        colNum: Math.floor(img.width / process.env.TILE_SIZE),
+        rowNum: Math.floor(img.height / process.env.TILE_SIZE),
+        pixelNum: process.env.TILE_SIZE * img.width * 4,
         dataCtx: this.dataCtx,
-        TILE_HEIGHT: config.TILE_HEIGHT,
-        TILE_WIDTH: config.TILE_WIDTH,
+        TILE_HEIGHT: process.env.TILE_SIZE,
+        TILE_WIDTH: process.env.TILE_SIZE,
       },
       type: 'MSG_START',
     });
@@ -93,7 +91,7 @@ export default class Mosaic {
 
   draw(canvas: HTMLCanvasElement) {
     const startColumn = 0;
-    const startRow = this.indexRow * config.TILE_HEIGHT;
+    const startRow = this.indexRow * process.env.TILE_SIZE;
 
     this.context.drawImage(canvas, startColumn, startRow);
   }
@@ -110,7 +108,12 @@ export default class Mosaic {
         }
         newRow.draw(tilesLoaded);
         this.draw(newRow.canvas);
-        newRow.context.clearRect(0, 0, this.canvas.width, config.TILE_HEIGHT);
+        newRow.context.clearRect(
+          0,
+          0,
+          this.canvas.width,
+          process.env.TILE_SIZE
+        );
       })
       .catch((err: string) => {
         // eslint-disable-next-line no-console

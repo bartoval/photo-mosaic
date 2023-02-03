@@ -1,15 +1,16 @@
 // @flow
 import Mosaic from './mosaic/Mosaic';
-import * as data from '../config.json';
 
 const loadImage = (file: File) => {
-  const fileReader = () => new Promise((resolve: (ProgressEvent) => void) => {
-    const reader = new FileReader();
-    reader.onload = resolve;
-    reader.readAsDataURL(file);
-  });
+  const fileReader = () =>
+    new Promise((resolve: (ProgressEvent) => void) => {
+      const reader = new FileReader();
+      reader.onload = resolve;
+      reader.readAsDataURL(file);
+    });
 
-  const isValidImageSize = (img) => img.width >= data.TILE_WIDTH && img.height >= data.TILE_HEIGHT;
+  const isValidImageSize = (img) =>
+    img.width >= process.env.TILE_SIZE && img.height >= process.env.TILE_SIZE;
   const resizeImage = ($img: HTMLImageElement, widthContainer: number) => {
     const $imgResized = $img;
     const ratio = $img.height / $img.width;
@@ -27,8 +28,8 @@ const loadImage = (file: File) => {
       const fileRead = e.target;
 
       if (
-        fileRead instanceof FileReader
-                && typeof fileRead.result === 'string'
+        fileRead instanceof FileReader &&
+        typeof fileRead.result === 'string'
       ) {
         const $img: HTMLImageElement = new Image();
 
@@ -37,13 +38,13 @@ const loadImage = (file: File) => {
           const $canvas = document.createElement('CANVAS');
 
           if (
-            $container
-                        && $canvas instanceof HTMLCanvasElement
-                        && isValidImageSize($img)
+            $container &&
+            $canvas instanceof HTMLCanvasElement &&
+            isValidImageSize($img)
           ) {
             $container.appendChild($canvas);
             new Mosaic($canvas).create(
-              resizeImage($img, $container.offsetWidth),
+              resizeImage($img, $container.offsetWidth)
             );
             $img.src = '';
           }

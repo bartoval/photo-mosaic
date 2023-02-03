@@ -9,33 +9,24 @@
 </a>
 
 <p>Simple filter to convert an Image in Mosaic using a dedicated worker to process high computational calculations.</p>
-
-[**More about Web Workers**](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
-
 </div>
 
-<hr />
-
-## How it works
-
----
-
-Photomosaic turn an image to mosaic downloading SVG from server. You just need to load your image and wait for the result.
-A dedicated woker is used to avoid UI freeze.
-
-The tile size should be configurable via the code constants in js/config.json.
-The default size is 10x10.
+Photo-mosaic turn an image to mosaic downloading SVG from server. You just need to load your image and wait for the result.
+A dedicated worker is used to avoid UI freeze.
 
 ## Installation
 
 - npm install
 
-## dev launch
+## build + server run
 
 - npm run start
 
 check the app on <http://localhost:3000>
 
 ## env variables
+
+TILE_SIZE= < number >  . The default value is 10, both client and server
 IMAGE_PATH=< your server address > // the client uses an other server to get the tiles
 
+example: TILE_SIZE=15 IMAGE_PATH=<https://yourdomainwithoutcors.com> yarn start

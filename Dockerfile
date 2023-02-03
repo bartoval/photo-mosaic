@@ -9,5 +9,7 @@ RUN yarn install
 COPY . .
 
 RUN yarn build
-# start app
+
+EXPOSE 3000
+
 CMD ["npm", "run", "start"]
