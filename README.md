@@ -25,8 +25,8 @@ A dedicated worker is used to avoid UI freeze.
 check the app on <http://localhost:3000>
 
 ## env variables
-
-TILE_SIZE= < number >  . The default value is 10, both client and server
+PORT= < number >  // used by server
+TILE_SIZE= < number >  . The default value is 10, both client and server // used by server and client
 IMAGE_PATH=< your server address > // the client uses an other server to get the tiles
 
-example: TILE_SIZE=15 IMAGE_PATH=<https://yourdomainwithoutcors.com> yarn start
+example: TILE_SIZE=15 IMAGE_PATH=<https://yourdomain.com> yarn start // used by client
