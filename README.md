@@ -22,7 +22,7 @@ A dedicated worker is used to avoid UI freeze.
 
 - npm run start
 
-check the app on <http://localhost:3000>
+check the app on <http://localhost:4000>
 
 ## env variables
 PORT= < number >  // used by server

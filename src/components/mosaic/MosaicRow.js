@@ -1,8 +1,11 @@
 // @flow
 export default class MosaicRow {
   row: Array<Promise<*>>;
+
   canvas: HTMLCanvasElement;
+
   context: CanvasRenderingContext2D;
+
   url: string;
 
   constructor(width: number) {
@@ -11,7 +14,9 @@ export default class MosaicRow {
     this.context = this.canvas.getContext('2d');
     this.canvas.width = width;
     this.canvas.height = process.env.TILE_SIZE;
-    this.url = `${process.env.IMAGE_PATH}/color/`;
+    this.url = process.env.IMAGE_PATH
+      ? `${window.location.protocol}//${window.location.host}/external_be/`
+      : `${window.location.protocol}//${window.location.host}/color/`;
   }
 
   fetch(tiles: Array<{ color: string }>) {

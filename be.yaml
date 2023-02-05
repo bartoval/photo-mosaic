@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photomosaic-be
+  annotations:
+    skupper.io/proxy: http
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photomosaic-be
+  template:
+    metadata:
+      labels:
+        app: photomosaic-be
+    spec:
+      containers:
+        - name: photomosaic-be
+          image: quay.io/vbartoli/photomosaic-app
+          ports:
+            - containerPort: 5030
+          env:
+            - name: PORT
+              value: '5030'
+            - name: IMAGE_PATH
+              value: http://photomosaic-fe:8080
+          imagePullPolicy: Always

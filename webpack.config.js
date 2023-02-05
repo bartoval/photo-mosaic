@@ -27,9 +27,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.IMAGE_PATH': JSON.stringify(
-        process.env.IMAGE_PATH || 'http://localhost:3000'
-      ),
+      'process.env.IMAGE_PATH': JSON.stringify(process.env.IMAGE_PATH),
       'process.env.TILE_SIZE': JSON.stringify(process.env.TILE_SIZE || '10'),
     }),
     new HtmlWebpackPlugin({
@@ -38,5 +36,3 @@ module.exports = {
     }),
   ],
 };
-
-//process.env.IMAGE_PATH ||

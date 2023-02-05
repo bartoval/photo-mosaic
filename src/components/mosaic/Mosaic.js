@@ -112,7 +112,7 @@ export default class Mosaic {
           0,
           0,
           this.canvas.width,
-          process.env.TILE_SIZE
+          process.env.TILE_SIZE,
         );
       })
       .catch((err: string) => {

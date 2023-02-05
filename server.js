@@ -4,7 +4,7 @@ const url = require('url');
 const path = require('path');
 const util = require('util');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 const dir = path.dirname(fs.realpathSync(__filename));
 const svgTemplate = [
@@ -14,20 +14,46 @@ const svgTemplate = [
 ].join('');
 
 http
-  .createServer((req, res) => {
+  .createServer(async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Request-Method', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET', 'POST');
     res.setHeader('Access-Control-Allow-Headers', '*');
 
     const pathname = url.parse(req.url).pathname;
     let m;
-    if (pathname == '/') {
+
+    if (pathname === '/') {
+      console.log('call app');
+
       res.writeHead(200, { 'Content-Type': 'text/html' });
       fs.createReadStream(dir + '/build/index.html').pipe(res);
       return;
+    } else if (pathname.includes('/external_be')) {
+      const m = pathname.match(/^\/external_be\/([0-9a-fA-F]{6})/);
+      const svgTemplate = await new Promise(function (resolve, reject) {
+        var req = http.get(
+          `${process.env.IMAGE_PATH}/color/${m[1]}`,
+          (response) => {
+            let data = '';
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+
+            response.on('end', () => {
+              resolve(data);
+            });
+          }
+        );
+      });
+
+      res.writeHead(200, { 'Content-Type': 'image/svg+xml' });
+      res.write(svgTemplate);
+      res.end();
+      return;
     } else if ((m = pathname.match(/^\/color\/([0-9a-fA-F]{6})/))) {
       res.writeHead(200, { 'Content-Type': 'image/svg+xml' });
+
       res.write(
         util.format(
           svgTemplate,
@@ -51,6 +77,6 @@ http
     res.write('404 Not Found\n');
     res.end();
   })
-  .listen(port);
+  .listen(port, '0.0.0.0');
 
 console.log('listening on port %d in %s mode', port);
